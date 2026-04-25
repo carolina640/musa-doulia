@@ -158,6 +158,12 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  // Validate API key is configured
+  if (!process.env.ANTHROPIC_API_KEY) {
+    console.error('ANTHROPIC_API_KEY is not set');
+    return res.status(500).json({ error: 'Server misconfiguration: missing API key.' });
+  }
+
   // Origin check
   if (!isOriginAllowed(req)) {
     return res.status(403).json({ error: 'Forbidden' });
@@ -202,7 +208,7 @@ export default async function handler(req, res) {
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-3-5-sonnet-20241022',
         max_tokens: 1000,
         system,
         messages: trimmedMessages
@@ -212,8 +218,9 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     if (!response.ok) {
-      console.error('Anthropic error:', data.error?.message || 'Unknown error');
-      return res.status(500).json({ error: 'API error. Please try again.' });
+      const errMsg = data.error?.message || 'Unknown Anthropic error';
+      console.error('Anthropic error:', errMsg);
+      return res.status(500).json({ error: `API error: ${errMsg}` });
     }
 
     const reply = data.content?.[0]?.text || 'Something went wrong.';
