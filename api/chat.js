@@ -58,9 +58,9 @@ const USERS = {
     conditions:"Generalized anxiety disorder",
     sleep_last_night:"6.5h, OK (1 bathroom break)", sleep_avg:"6.8h",
     hr:"78 bpm", steps:"7,400", activity:"Moderate (yoga 2x, walks)",
-    symptoms_7d:"Lower pelvic pressure, Nighttime shortness of breath, Nasal congestion without a cold, Abdominal bloating",
-    mood_7d:"Anxious 5/7, Overwhelmed 2/7",
-    queries:"Asked about Fatigue in the past week and increased emotional sensitivity, Nighttime shortness of breath, Nasal congestion without a cold yesterday"
+    symptoms_7d:"Strong pelvic pressure (baby has dropped/engaged), Irregular Braxton Hicks contractions (3-4x/day, more intense than before), Lightning crotch (sharp shooting pains in vagina and pelvis), Lower back ache, Difficulty sleeping (can't get comfortable), Increased vaginal discharge",
+    mood_7d:"Anxious 5/7, Overwhelmed 3/7, Impatient 4/7",
+    queries:"Asked about pelvic pressure and whether baby has dropped, Whether contractions are Braxton Hicks or real labor, Sharp shooting vaginal pains (lightning crotch)"
   }
 };
 
@@ -208,7 +208,7 @@ export default async function handler(req, res) {
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-3-5-sonnet-20241022',
+        model: 'claude-sonnet-4-5',
         max_tokens: 1000,
         system,
         messages: trimmedMessages
